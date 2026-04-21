@@ -1,0 +1,21 @@
+---
+description: Require reasonable Playwright E2E coverage for behavior changes
+alwaysApply: true
+---
+
+# E2E Testing Policy
+
+Add or update Playwright E2E tests when changes affect user-visible behavior.
+
+- Add a new E2E test for new user-facing behavior.
+- Add a regression E2E test for bug fixes.
+- Prefer stable selectors (`getByRole`, labels, placeholders) over brittle CSS selectors.
+- Keep tests deterministic and isolated (clear/setup state per test).
+- Run relevant E2E tests before finishing implementation.
+
+Do not require E2E tests for:
+- docs-only changes
+- pure refactors with no behavior change
+- internal config/tooling changes with no user-facing impact
+
+If E2E is skipped, explicitly state why it is not reasonable.

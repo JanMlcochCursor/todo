@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <button id="theme-toggle" class="theme-floating" type="button" aria-label="Toggle dark theme">
+      Dark mode
+    </button>
     <main class="app">
       <h1>Todo List</h1>
       <form id="todo-form" class="todo-form">
@@ -22,7 +25,9 @@
 
       <section class="todo-meta">
         <span id="items-left">0 items left</span>
-        <button id="clear-completed" type="button">Clear completed</button>
+        <div class="meta-actions">
+          <button id="clear-completed" type="button">Clear completed</button>
+        </div>
       </section>
 
       <ul id="todo-list" class="todo-list" aria-label="Todo list"></ul>

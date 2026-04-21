@@ -1,11 +1,32 @@
 "use strict";
 const STORAGE_KEY = "todo-list-items";
+const THEME_STORAGE_KEY = "todo-theme";
 const form = document.querySelector("#todo-form");
 const input = document.querySelector("#todo-input");
 const list = document.querySelector("#todo-list");
 const itemsLeft = document.querySelector("#items-left");
 const clearCompletedButton = document.querySelector("#clear-completed");
+const themeToggleButton = document.querySelector("#theme-toggle");
 let todos = loadTodos();
+function getPreferredTheme() {
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (storedTheme === "light" || storedTheme === "dark") {
+        return storedTheme;
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+    themeToggleButton.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+}
+function setTheme(theme) {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    applyTheme(theme);
+}
+function toggleTheme() {
+    const currentTheme = document.body.dataset.theme === "dark" ? "dark" : "light";
+    setTheme(currentTheme === "dark" ? "light" : "dark");
+}
 function loadTodos() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -104,4 +125,6 @@ form.addEventListener("submit", (event) => {
     input.focus();
 });
 clearCompletedButton.addEventListener("click", clearCompleted);
+themeToggleButton.addEventListener("click", toggleTheme);
+applyTheme(getPreferredTheme());
 render();
