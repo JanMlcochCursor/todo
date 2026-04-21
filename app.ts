@@ -13,10 +13,13 @@ const list = document.querySelector<HTMLUListElement>("#todo-list")!;
 const itemsLeft = document.querySelector<HTMLSpanElement>("#items-left")!;
 const clearCompletedButton =
   document.querySelector<HTMLButtonElement>("#clear-completed")!;
+const toggleCompletedVisibilityButton =
+  document.querySelector<HTMLButtonElement>("#toggle-completed-visibility")!;
 const themeToggleButton =
   document.querySelector<HTMLButtonElement>("#theme-toggle")!;
 
 let todos: TodoItem[] = loadTodos();
+let hideDone = false;
 
 function getPreferredTheme(): "light" | "dark" {
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
@@ -81,7 +84,9 @@ function updateItemsLeft(): void {
 function render(): void {
   list.innerHTML = "";
 
-  todos.forEach((todo) => {
+  const visibleTodos = hideDone ? todos.filter((todo) => !todo.completed) : todos;
+
+  visibleTodos.forEach((todo) => {
     const item = document.createElement("li");
     item.className = `todo-item${todo.completed ? " completed" : ""}`;
     item.dataset.id = String(todo.id);
@@ -142,6 +147,12 @@ function deleteTodo(id: number): void {
   render();
 }
 
+function toggleCompletedVisibility(): void {
+  hideDone = !hideDone;
+  toggleCompletedVisibilityButton.textContent = hideDone ? "Show done" : "Hide done";
+  render();
+}
+
 function clearCompleted(): void {
   todos = todos.filter((todo) => !todo.completed);
   saveTodos();
@@ -159,7 +170,40 @@ form.addEventListener("submit", (event: SubmitEvent) => {
   input.focus();
 });
 
+const importCsvInput =
+  document.querySelector<HTMLInputElement>("#import-csv")!;
+
+function importCsv(file: File): void {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    const lines = (reader.result as string).trim().split("\n");
+    const imported: TodoItem[] = [];
+    for (const line of lines) {
+      const commaIndex = line.lastIndexOf(",");
+      if (commaIndex === -1) continue;
+      const text = line.slice(0, commaIndex).trim();
+      const completed = line.slice(commaIndex + 1).trim().toLowerCase() === "true";
+      if (!text) continue;
+      imported.push({ id: Date.now() + imported.length, text, completed });
+    }
+    if (imported.length === 0) return;
+    todos = imported;
+    saveTodos();
+    render();
+  });
+  reader.readAsText(file);
+}
+
+importCsvInput.addEventListener("change", () => {
+  const file = importCsvInput.files?.[0];
+  if (file) {
+    importCsv(file);
+    importCsvInput.value = "";
+  }
+});
+
 clearCompletedButton.addEventListener("click", clearCompleted);
+toggleCompletedVisibilityButton.addEventListener("click", toggleCompletedVisibility);
 themeToggleButton.addEventListener("click", toggleTheme);
 
 applyTheme(getPreferredTheme());

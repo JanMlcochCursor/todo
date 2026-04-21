@@ -29,3 +29,7 @@ This is a vanilla TypeScript single-page app with no framework or bundler. The e
 **Theme:** Stored in `localStorage` under `todo-theme`. Falls back to `prefers-color-scheme`. Applied via `document.body.dataset.theme`.
 
 **Tests:** Playwright e2e only (`tests/todo.spec.ts`). The config sets `baseURL: http://127.0.0.1:8000` and spins up `npm run serve` automatically. Each test clears `localStorage` in `beforeEach`.
+
+## Conventions
+
+When adding or modifying user-facing functionality, add a Playwright e2e test in `tests/todo.spec.ts` covering the new behavior.

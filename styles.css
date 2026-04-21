@@ -115,6 +115,21 @@ h1 {
   color: var(--text);
 }
 
+.button-label {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+  background: var(--muted-button);
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.button-label input[type="file"] {
+  display: none;
+}
+
 .todo-list {
   list-style: none;
   padding: 0;
