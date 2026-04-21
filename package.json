@@ -1,0 +1,30 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "python3 -m http.server 8000",
+    "open": "open http://localhost:8000",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanMlcochCursor/todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JanMlcochCursor/todo/issues"
+  },
+  "homepage": "https://github.com/JanMlcochCursor/todo#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "typescript": "^6.0.3"
+  }
+}
